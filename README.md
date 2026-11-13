@@ -19,6 +19,32 @@ Servidor MCP (Model Context Protocol) en TypeScript que permite a un asistente d
 - "Pregúntale a Astra: ¿qué es la inmunología clínica? y muéstrame la respuesta."
 - "Haz clic en el botón de enviar (coordenadas 0.9, 0.95) y luego lee la respuesta."
 
+## Utilidad académica
+
+**Qué problema resuelve.** Durante el estudio, usar una app de ayuda como Astra
+AI exige un ciclo manual repetido: cambiar de ventana, copiar la pregunta,
+pegarla, esperar, leer y volver a los apuntes — sin dejar registro de lo
+consultado. Este MCP permite que la IA orqueste ese ciclo completo desde
+opencode (escribir, enviar, leer la respuesta por OCR y guardar la captura), y
+el estudiante se concentra en comprender y contrastar.
+
+**Para quién.** Estudiantes de ciencias de la salud que combinan apps de ayuda
+de estudio con una IA de escritorio para organizar su estudio.
+
+**En qué dimensión del aprendizaje aporta.**
+
+1. **Comprensión conceptual y recuperación activa**: la IA genera preguntas de
+   repaso de la materia y las contrasta con Astra, obligando a analizar y
+   validar la respuesta contra la bibliografía en vez de copiarla pasivamente.
+2. **Organización y evidencia del estudio**: cada sesión deja capturas con
+   fecha en `data/capturas/`, un registro verificable para repasos.
+3. **Eficiencia operativa**: se elimina la manipulación manual entre ventanas;
+   más tiempo para el análisis y la interpretación.
+
+Caso real documentado (inmunodiagnóstico de la celiaquía) con capturas en
+[`docs/DEMOSTRACION.md`](docs/DEMOSTRACION.md). Texto completo en
+[`UTILIDAD_ACADEMICA.md`](UTILIDAD_ACADEMICA.md).
+
 ## Requisitos y permisos
 
 - macOS con Astra AI instalada en `/Applications/Astra AI.app`.
