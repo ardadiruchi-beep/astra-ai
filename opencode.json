@@ -1,0 +1,39 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "edit": "allow",
+    "webfetch": "allow",
+    "bash": {
+      "*": "allow",
+      "rm *": "deny",
+      "rmdir *": "deny",
+      "del *": "deny",
+      "erase *": "deny",
+      "rd *": "deny",
+      "Remove-Item *": "deny",
+      "sudo *": "deny",
+      "su *": "deny",
+      "format *": "deny",
+      "mkfs*": "deny",
+      "dd *": "deny",
+      "shutdown*": "deny",
+      "reboot*": "deny",
+      "reg delete*": "deny",
+      "git push*": "deny",
+      "killall *": "deny",
+      "pkill *": "deny",
+      "taskkill *": "deny"
+    }
+  },
+  "mcp": {
+    "opencode-2-astrs-ai": {
+      "type": "local",
+      "command": [
+        "node",
+        "/Users/arseniydanilov/Documents/Proyecto/mcp/opencode-2-astrs-ai/dist/index.js"
+      ],
+      "enabled": true,
+      "timeout": 30000
+    }
+  }
+}
