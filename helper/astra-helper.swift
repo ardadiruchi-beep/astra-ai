@@ -23,6 +23,34 @@ func screenRecordingGranted() -> Bool {
     return CGPreflightScreenCaptureAccess()
 }
 
+// --- Entrada de teclado/raton nativa (CGEvent): solo requiere permiso de Accesibilidad ---
+
+func postKey(keyCode: CGKeyCode, flags: CGEventFlags) {
+    let src = CGEventSource(stateID: .hidSystemState)
+    let down = CGEvent(keyboardEventSource: src, virtualKey: keyCode, keyDown: true)
+    down?.flags = flags
+    down?.post(tap: .cghidEventTap)
+    usleep(50_000)
+    let up = CGEvent(keyboardEventSource: src, virtualKey: keyCode, keyDown: false)
+    up?.flags = flags
+    up?.post(tap: .cghidEventTap)
+}
+
+func mouseClick(x: Double, y: Double) {
+    let pt = CGPoint(x: x, y: y)
+    let src = CGEventSource(stateID: .hidSystemState)
+    let down = CGEvent(mouseEventSource: src, mouseType: .leftMouseDown, mouseCursorPosition: pt, mouseButton: .left)
+    down?.post(tap: .cghidEventTap)
+    usleep(80_000)
+    let up = CGEvent(mouseEventSource: src, mouseType: .leftMouseUp, mouseCursorPosition: pt, mouseButton: .left)
+    up?.post(tap: .cghidEventTap)
+}
+
+func activateAstra() -> Bool {
+    guard let app = NSRunningApplication.runningApplications(withBundleIdentifier: "com.astra-ai.app").first else { return false }
+    return app.activate(options: [.activateAllWindows])
+}
+
 func findAstraWindowInfo() -> WindowInfo? {
     guard let list = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: Any]] else { return nil }
     var best: WindowInfo? = nil
@@ -194,6 +222,25 @@ struct AstraHelper {
             let path = args[2]
             let lines = ocrImage(path)
             for l in lines { print(l) }
+
+        case "activate":
+            printJSON(["ok": activateAstra()])
+
+        case "click":
+            guard args.count >= 4, let x = Double(args[2]), let y = Double(args[3]) else {
+                fputs("Uso: astra-helper click <x> <y>\n", stderr)
+                exit(1)
+            }
+            mouseClick(x: x, y: y)
+            printJSON(["ok": true])
+
+        case "paste":
+            postKey(keyCode: 9, flags: .maskCommand) // Cmd+V
+            printJSON(["ok": true])
+
+        case "return":
+            postKey(keyCode: 36, flags: []) // Return
+            printJSON(["ok": true])
 
         default:
             fputs("Comando desconocido: \(cmd)\n", stderr)

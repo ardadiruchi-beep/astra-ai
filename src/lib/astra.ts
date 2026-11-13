@@ -77,7 +77,12 @@ export async function abrirApp(): Promise<void> {
 }
 
 export async function activarApp(): Promise<void> {
-  await run("osascript", ["-e", `tell application "${APP_NAME}" to activate`], { timeoutMs: 10_000 });
+  const h = await ensureHelper();
+  if (!h.ok) return;
+  const r = await run(HELPER_BIN, ["activate"], { timeoutMs: 10_000 });
+  if (r.code !== 0) {
+    await run("osascript", ["-e", `tell application "${APP_NAME}" to activate`], { timeoutMs: 10_000 });
+  }
 }
 
 export function sleep(ms: number): Promise<void> {
@@ -85,22 +90,25 @@ export function sleep(ms: number): Promise<void> {
 }
 
 export async function clickAt(x: number, y: number): Promise<{ ok: boolean; error?: string }> {
-  const script = `tell application "System Events" to click at {${Math.round(x)}, ${Math.round(y)}}`;
-  const r = await run("osascript", ["-e", script], { timeoutMs: 10_000 });
-  if (r.code !== 0) return { ok: false, error: r.stderr || "No se pudo hacer clic. Verifica el permiso de Accesibilidad." };
+  const h = await ensureHelper();
+  if (!h.ok) return { ok: false, error: h.error };
+  const r = await run(HELPER_BIN, ["click", String(Math.round(x)), String(Math.round(y))], { timeoutMs: 10_000 });
+  if (r.code !== 0) return { ok: false, error: r.stderr || "No se pudo hacer clic." };
   return { ok: true };
 }
 
 export async function pegarPortapapeles(): Promise<{ ok: boolean; error?: string }> {
-  const script = `tell application "System Events" to keystroke "v" using command down`;
-  const r = await run("osascript", ["-e", script], { timeoutMs: 10_000 });
+  const h = await ensureHelper();
+  if (!h.ok) return { ok: false, error: h.error };
+  const r = await run(HELPER_BIN, ["paste"], { timeoutMs: 10_000 });
   if (r.code !== 0) return { ok: false, error: r.stderr || "No se pudo pegar. Verifica el permiso de Accesibilidad." };
   return { ok: true };
 }
 
 export async function presionarReturn(): Promise<{ ok: boolean; error?: string }> {
-  const script = `tell application "System Events" to keystroke return`;
-  const r = await run("osascript", ["-e", script], { timeoutMs: 10_000 });
+  const h = await ensureHelper();
+  if (!h.ok) return { ok: false, error: h.error };
+  const r = await run(HELPER_BIN, ["return"], { timeoutMs: 10_000 });
   if (r.code !== 0) return { ok: false, error: r.stderr || "No se pudo presionar Return." };
   return { ok: true };
 }
