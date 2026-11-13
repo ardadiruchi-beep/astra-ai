@@ -76,4 +76,6 @@ Debe terminar con `Prueba de humo superada.`
 - [`INVESTIGACION.md`](INVESTIGACION.md) — vías de integración probadas y elegida.
 - [`UTILIDAD_ACADEMICA.md`](UTILIDAD_ACADEMICA.md) — qué problema resuelve y en qué dimensión del aprendizaje aporta.
 - [`DECLARACION-IA.md`](DECLARACION-IA.md) — uso de IA, límites conocidos y consideraciones de seguridad.
+- [`docs/DEMOSTRACION.md`](docs/DEMOSTRACION.md) — caso real antes/después con capturas.
+- [`ENTREGABLES.md`](ENTREGABLES.md) — índice de los entregables del examen.
 - [`PROMPT.md`](PROMPT.md) — encargo original con el que se construyó (transparencia).
